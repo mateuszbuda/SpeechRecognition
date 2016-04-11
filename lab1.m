@@ -1,3 +1,5 @@
+%% environment setup
+
 clc
 clear
 
@@ -9,6 +11,10 @@ if count(P, './proto') == 0
 end
 
 load example
+load tidigits
+
+%% MFCC for example utterance
+
 samples = example{1}.samples;
 
 if false
@@ -18,7 +24,7 @@ if false
 end
 
 
-[ lmfcc, mfcc, mspec, spec, windowed, preemph, frames ] = mfcc(samples);
+[ lmfcc, mfccoef, mspec, spec, windowed, preemph, frames ] = mfcc(samples);
 
 
 if false
@@ -53,7 +59,7 @@ end
 
 if false
     figure
-    imagesc(flip(mfcc'))
+    imagesc(flip(mfccoef'))
     title('mfcc: MFCCs')
 end
 
@@ -61,7 +67,35 @@ if false
     figure
     imagesc(lmfcc')
     title('lmfcc: Liftered MFCCs')
-    axis xy
+end
+
+clear lmfcc mfccoef mspec spec windowed preemph frames
+
+%% MFCC for tidigits dataset
+
+N = size(tidigits, 2);
+
+tidigits_mfcc = [];
+tidigits_mspec = [];
+
+for i = 1:N
+    
+    [ lmfcc, ~, mspec ] = mfcc(tidigits{i}.samples);
+    tidigits_mfcc = [tidigits_mfcc; lmfcc];
+    tidigits_mspec = [tidigits_mspec; mspec];
+    
+end
+
+mfcc_correlation_matrix = corrcoef(tidigits_mfcc);
+mspec_correlation_matrix  = corrcoef(tidigits_mspec);
+
+if false
+    figure
+    imagesc(mfcc_correlation_matrix);
+    title('mfcc correlation coefficients matrix')
+    figure
+    imagesc(mspec_correlation_matrix);
+    title('mspec correlation coefficients matrix')
 end
 
 clear P
