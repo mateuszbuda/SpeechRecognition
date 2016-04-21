@@ -1,6 +1,6 @@
 function [ lpr ] = logmvndd( X, means, covars )
 %LOGMVNDD Compute Gaussian log-density at X for a diagonal model.
-%MatLab equivalent for log_multivariate_normal_density_diag in scikit-learn
+%MatLab equivalent to log_multivariate_normal_density_diag in scikit-learn
 %   Args:
 %       X: array like, shape (n_observations, n_features)
 %       means: array like, shape (n_components, n_features)
