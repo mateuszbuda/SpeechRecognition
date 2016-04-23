@@ -1,6 +1,10 @@
-function [ error ] = gmmrecognize( models, utterances )
+function [ error ] = gmmrecognize( models, utterances, hmm )
 %GMMRECOGNIZE Computes log likelihood of each model for each utterance and
 %matches best model. Outputs recognition error rate.
+
+if nargin < 3
+    hmm = 0;
+end
 
 N = size(utterances, 2);
 M = size(models, 2);
@@ -14,9 +18,16 @@ for n = 1:N
     for m = 1:M
         
         model = models{m};
-        means = model.gmm.means;
-        covars = model.gmm.covars;
-        weights = model.gmm.weights;
+        
+        if hmm == 0
+            means = model.gmm.means;
+            covars = model.gmm.covars;
+            weights = model.gmm.weights;
+        else
+            means = model.hmm.means;
+            covars = model.hmm.covars;
+            weights = ones(size(model.gmm.weights));
+        end
         
         gmm_obsloglik = logmvndd(mfcc, means, covars);
         logliks(n, m) = gmmloglik(gmm_obsloglik, weights);

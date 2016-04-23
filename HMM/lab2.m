@@ -15,6 +15,7 @@ example{1} = load('lab2_example.mat');
 plot_mfcc = 0;
 plot_gmm_obsloglik = 0;
 plot_hmm_obsloglik = 0;
+plot_hmm_logalpha = 0;
 
 %% exapmle
 mfcc = example{1}.mfcc;
@@ -41,11 +42,25 @@ if plot_hmm_obsloglik
     title('hmm_obsloglik: HMM component/observation log likelihood')
 end
 
-%% recognition with GMM
+hmm_logalpha = forward(hmm_obsloglik, log(models{1}.hmm.startprob), log(models{1}.hmm.transmat));
 
-error = gmmrecognize(models, tidigits);
+if plot_hmm_logalpha
+    figure
+    imagesc(flip(hmm_logalpha'))
+    title('hmm_logalpha: log alpha')
+end
+
+hmm_loglik = hmmloglik(hmm_logalpha);
+
+%% recognition
+
+gmm_error = round(gmmrecognize(models, tidigits) * length(tidigits));
+
+hmm_error = round(hmmrecognize(models, tidigits) * length(tidigits));
+
+hmm_gmm_error = round(gmmrecognize(models, tidigits, 1) * length(tidigits));
 
 %% cleanup
 
-clear plot_mfcc plot_gmm_obsloglik plot_hmm_obsloglik
+clear plot_mfcc plot_gmm_obsloglik plot_hmm_obsloglik plot_hmm_logalpha
 
