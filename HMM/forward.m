@@ -17,7 +17,7 @@ forward_prob(1, :) = log_startprob + log_emlik(1, :);
 
 for n = 2:N
     
-    for j = 1:min(n, M)
+    for j = 1:M
         
         forward_prob(n, j) = logsumexp(forward_prob(n - 1, :) + log_transmat(:, j)') + log_emlik(n, j);
     

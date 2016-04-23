@@ -1,6 +1,10 @@
-function [ error ] = hmmrecognize( models, utterances )
+function [ error ] = hmmrecognize( models, utterances, viterbi_flag )
 %HMMRECOGNIZE Computes log likelihood of each model for each utterance and
 %matches best model. Outputs recognition error rate.
+
+if nargin < 3
+    viterbi_flag = 0;
+end
 
 N = size(utterances, 2);
 M = size(models, 2);
@@ -20,8 +24,16 @@ for n = 1:N
         log_transmat = log(model.hmm.transmat);
         
         hmm_obsloglik = logmvndd(mfcc, means, covars);
-        hmm_logalpha = forward(hmm_obsloglik, log_startprob, log_transmat);
-        logliks(n, m) = hmmloglik(hmm_logalpha);
+        
+        if viterbi_flag == 0
+            
+            hmm_logalpha = forward(hmm_obsloglik, log_startprob, log_transmat);
+            ll = hmmloglik(hmm_logalpha);
+        else
+            ll = viterbi(hmm_obsloglik, log_startprob, log_transmat);
+        end
+        
+        logliks(n, m) = ll;
         
     end
     

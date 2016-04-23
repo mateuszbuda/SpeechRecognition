@@ -52,13 +52,23 @@ end
 
 hmm_loglik = hmmloglik(hmm_logalpha);
 
+[hmm_vloglik, hmm_vpath] = viterbi(hmm_obsloglik, log(models{1}.hmm.startprob), log(models{1}.hmm.transmat));
+
+if plot_hmm_logalpha
+    hold on
+    plot(1:size(hmm_logalpha', 2), hmm_vpath)
+    hold off
+end
+
 %% recognition
 
-gmm_error = round(gmmrecognize(models, tidigits) * length(tidigits));
+err_gmm = round(gmmrecognize(models, tidigits) * length(tidigits));
 
-hmm_error = round(hmmrecognize(models, tidigits) * length(tidigits));
+err_hmm = round(hmmrecognize(models, tidigits) * length(tidigits));
 
-hmm_gmm_error = round(gmmrecognize(models, tidigits, 1) * length(tidigits));
+err_hmm_gmm = round(gmmrecognize(models, tidigits, 1) * length(tidigits));
+
+err_hmm_viterbi = round(hmmrecognize(models, tidigits, 1) * length(tidigits));
 
 %% cleanup
 
