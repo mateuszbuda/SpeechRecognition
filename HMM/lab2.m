@@ -21,7 +21,7 @@ plot_hmm_logalpha = 0;
 mfcc = example{1}.mfcc;
 
 if plot_mfcc
-    figure
+    figure('position', [100 400 1000 200])
     imagesc(flip(mfcc'))
     title('mfcc: MFCC')
 end
@@ -29,25 +29,25 @@ end
 gmm_obsloglik = logmvndd(mfcc, models{1}.gmm.means, models{1}.gmm.covars);
 
 if plot_gmm_obsloglik
-    figure
+    figure('position', [100 400 1000 200])
     imagesc(flip(gmm_obsloglik'))
-    title('gmm_obsloglik: GMM component/observation log likelihood')
+    title('gmm obsloglik: GMM component/observation log likelihood')
 end
 
 hmm_obsloglik = logmvndd(mfcc, models{1}.hmm.means, models{1}.hmm.covars);
 
 if plot_hmm_obsloglik
-    figure
+    figure('position', [100 400 1000 200])
     imagesc(flip(hmm_obsloglik'))
-    title('hmm_obsloglik: HMM component/observation log likelihood')
+    title('hmm obsloglik: HMM component/observation log likelihood')
 end
 
 hmm_logalpha = forward(hmm_obsloglik, log(models{1}.hmm.startprob), log(models{1}.hmm.transmat));
 
 if plot_hmm_logalpha
-    figure
+    figure('position', [100 400 1000 200])
     imagesc(flip(hmm_logalpha'))
-    title('hmm_logalpha: log alpha')
+    title('hmm logalpha: log alpha')
 end
 
 hmm_loglik = hmmloglik(hmm_logalpha);
