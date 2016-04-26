@@ -26,7 +26,7 @@ for n = 1:N
         else
             means = model.hmm.means;
             covars = model.hmm.covars;
-            weights = ones(size(model.gmm.weights));
+            weights = ones(size(model.gmm.weights)) / length(model.gmm.weights);
         end
         
         gmm_obsloglik = logmvndd(mfcc, means, covars);
