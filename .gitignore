@@ -175,3 +175,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
+
+### Custom ###
+ASR/tidigits/
