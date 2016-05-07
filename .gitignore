@@ -230,7 +230,15 @@ fabric.properties
 
 
 ### Custom ###
+# dataset
 ASR/tidigits/
+
 ASR/.idea/
+
+# feature files
 *.pfile
+
+# model files
+*.mdl
+*.cfg
 
