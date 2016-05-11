@@ -53,8 +53,8 @@ def pfile_write(filename, utt_ids, frame_ids, features, labels):
     assert len(utt_ids) == num_frames
     assert len(frame_ids) == num_frames
     assert num_label_frames == num_frames
-    cmd = 'pfile_create -i - -o '+filename+' -f '+str(num_features)+' -l '+str(num_labels)
+    pfilecmd = 'pfile_create -i - -o '+filename+' -f '+str(num_features)+' -l '+str(num_labels)
     proc = subprocess.Popen(pfilecmd, shell=True, stdin=subprocess.PIPE)    
     for f in range(num_frames):
         row = str(utt_ids[f])+' '+str(frame_ids[f])+' '+' '.join(map(str, features[f,:]))+' '+' '.join(map(str, labels[f,:]))
-        print(row, file=proc.stdin)
+        # print(row, file=proc.stdin)
